@@ -2,11 +2,13 @@ name: Build LaTeX PDF
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+    # 监听所有 tex/cls/bib/图片 文件变动
     paths:
       - '**/*.tex'
-      - '**/*.bib'
       - '**/*.cls'
+      - '**/*.bib'
       - '**/*.png'
       - '**/*.jpg'
   workflow_dispatch:
@@ -14,16 +16,26 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
+      # 第一步：检出仓库代码
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # （可选）安装 ctex-fandol 字体支持
+      - name: Install CTeX fandol fontset
+        run: |
+          tlmgr update --self
+          tlmgr install ctex-fandol
+
+      # 第二步：设置 TeX 环境并使用 XeLaTeX 编译
       - name: Set up LaTeX environment and build PDF
         uses: dante-ev/latex-action@latest
         with:
-          root_file: dx-real-analysis.tex
           compiler: xelatex
+          root_file: dx-real-analysis.tex
 
+      # 第三步：上传生成的 PDF 到 Artifacts
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
         with:
