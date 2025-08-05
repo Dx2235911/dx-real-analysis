@@ -4,40 +4,52 @@ on:
   push:
     branches:
       - main
-    # 监听所有 tex/cls/bib/图片 文件变动
-    paths:
-      - '**/*.tex'
-      - '**/*.cls'
-      - '**/*.bib'
-      - '**/*.png'
-      - '**/*.jpg'
-  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
+  build-pdf:
+    name: Compile LaTeX to PDF
     runs-on: ubuntu-latest
 
     steps:
-      # 第一步：检出仓库代码
+      # 1. 拉取最新代码
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      # （可选）安装 ctex-fandol 字体支持
-      - name: Install CTeX fandol fontset
+      # 2. 安装 TeX Live（包括 XeTeX、CTeX 字体等）和 Biber
+      - name: Install TeX Live and Biber
         run: |
-          tlmgr update --self
-          tlmgr install ctex-fandol
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-xetex \
+            texlive-fonts-recommended \
+            texlive-latex-recommended \
+            texlive-latex-extra \
+            texlive-bibtex-extra \
+            biber \
+            fonts-noto-cjk
 
-      # 第二步：设置 TeX 环境并使用 XeLaTeX 编译
-      - name: Set up LaTeX environment and build PDF
-        uses: dante-ev/latex-action@latest
-        with:
-          compiler: xelatex
-          root_file: dx-real-analysis.tex
+      # 3. 第一遍 XeLaTeX 编译（生成 .aux 等文件）
+      - name: First XeLaTeX compilation
+        run: xelatex -interaction=nonstopmode dx-real-analysis.tex || true
 
-      # 第三步：上传生成的 PDF 到 Artifacts
+      # 4. 用 Biber 处理参考文献
+      - name: Run Biber
+        run: biber dx-real-analysis || true
+
+      # 5. 第二遍 XeLaTeX 编译（引用和目录）
+      - name: Second XeLaTeX compilation
+        run: xelatex -interaction=nonstopmode dx-real-analysis.tex || true
+
+      # 6. 第三遍 XeLaTeX 编译（确保所有引用正确）
+      - name: Final XeLaTeX compilation
+        run: xelatex -interaction=nonstopmode dx-real-analysis.tex || true
+
+      # 7. 上传生成的 PDF 作为 Artifact
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Real-Analysis-PDF
+          name: dx-real-analysis-pdf
           path: dx-real-analysis.pdf
