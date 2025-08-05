@@ -2,12 +2,14 @@ name: Build LaTeX PDF
 
 on:
   push:
+    branches:
+      - main
     paths:
-      - '**.tex'
-      - '**.bib'
-      - '**.cls'
-      - '**.png'
-      - '**.jpg'
+      - '**/*.tex'
+      - '**/*.bib'
+      - '**/*.cls'
+      - '**/*.png'
+      - '**/*.jpg'
   workflow_dispatch:
 
 jobs:
@@ -15,17 +17,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up LaTeX environment
-      uses: dante-ev/latex-action@latest
-      with:
-        # 用引号包裹文件名，并转义空格
-        root_file: "dx real analysis.tex"
+      - name: Set up LaTeX environment and build PDF
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: dx-real-analysis.tex
 
-    - name: Upload PDF artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: Real-Analysis-PDF
-        path: "dx real analysis.pdf"
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Real-Analysis-PDF
+          path: dx-real-analysis.pdf
