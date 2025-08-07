@@ -701,7 +701,7 @@ m(V_q) = m(V), \quad \forall q \in \mathbb{Q} \cap [-1,1].
 
 综上，$V$ 无法具有一致的 Lebesgue 测度，因此 \textbf{Vitali 集 $V$ 不是 Lebesgue 可测集}。
 \chapter{第三章可测函数}
-\subsection{可测函数封闭性}
+\section{可测函数封闭性}
 \begin{definition}
 设 $E \subset \mathbb{R}^n$ 可测，若对任意 $a \in \mathbb{R}$，有 $\{x \in E \mid f(x) > a\} \in \mathcal{M}$，则称 $f$ 为 $E$ 上的 \textbf{Lebesgue 可测函数}，简称为可测函数。
 \end{definition}
@@ -753,7 +753,7 @@ cf,\quad |f|,\quad f + g,\quad fg,\quad \frac{f}{g},\quad \min(f, g),\quad \max(
 \]
 均为 $E$ 上可测函数。
 \end{theorem}
-\subsection{从简单函数到一般函数}
+\section{从简单函数到一般函数}
 正如无数次我们需要从特殊到一般，这次我们仍然需要从特殊大简单函数了解他的性质然后进行推广。
 \begin{definition}[简单函数]
 设 $f$ 是 $E \in \mathcal{M}$ 上的函数，如果 $E$ 可分解为有限个互不相交的可测集的并：
@@ -1006,6 +1006,237 @@ f(x) = \lim_{k \to \infty} f_k(x) \quad \text{a.e. } x \in E.
 |f_k(x)| < M,\quad \forall x \in \mathbb{R}^n.
 \]
 \end{theorem}
+\section{3.3可测函数列的收敛性}
+要学函数列收敛的原因是证明函数列收敛到f， 他的积分也收敛到f的积分。
+\begin{lemma}[收敛点的集合]\label{lem:limit-point-set}
+设 $\{f_k\}_{k\in\mathbb{N}}$ 和 $f$ 均为集合 $E$ 上的函数，则
+\[
+E\bigl(\lim_{k\to\infty}f_k = f\bigr)
+=\bigcap_{l=1}^{\infty}
+\bigcup_{j=1}^{\infty}
+\bigcap_{k=j}^{\infty}
+E\bigl(\lvert f_k(x)-f(x)\rvert<1/l\bigr).
+\]
+\end{lemma}
+第一个交1到∞到为交集A1，然后是2到∞为交集A2，交集应该越来越大，所有交集再并。然后再交集A1，A2再并 从A2并到A∞产生B1，从A2并到正无穷为B2 然后B1，B2再交
+\begin{proposition}[交并集与量词对应]
+设 $\{A_i\}_{i\in I}$ 为一族集合，则有
+\begin{align*}
+\bigcap_{i\in I}A_i
+&=\{\,x\mid \forall\,i\in I:\;x\in A_i\},\\
+\bigcup_{i\in I}A_i
+&=\{\,x\mid \exists\,i\in I:\;x\in A_i\}.
+\end{align*}
+看到 $\bigcap$ 就想 $\forall$；\\
+看到 $\bigcup$ 就想 $\exists$。
+\end{proposition}
+我们用这个新方法再解释一下集合运算，A1里面的任意元素x都是每一个集合都有的，A2的里面的元素是任意除了第一个集合都有的。B1的元素是A1，A2，A3……中存在的元素。B2是A2，A3……中存在的元素。最后的交出来集合C是所有B1，B2……都有的元素。
+\begin{proposition}[交并集与量词的对应示例]
+若有
+\[
+\bigcap_{l=1}^{\infty}
+\bigcup_{j=1}^{\infty}
+\bigcap_{k=j}^{\infty}
+E\bigl(\lvert f_k(x)-f(x)\rvert<1/l\bigr),
+\]
+则它精确对应逻辑语句
+\[
+\forall\,l\ge1\;\exists\,j\ge1\;\forall\,k\ge j:\;\lvert f_k(x)-f(x)\rvert<1/l.
+\]
+具体层次对应为：
+\begin{itemize}
+  \item 最内层\quad 
+    $\displaystyle\bigcap_{k=j}^{\infty}\;$
+    $\longleftrightarrow\;\forall\,k\ge j$;
+  \item 中间层\quad 
+    $\displaystyle\bigcup_{j=1}^{\infty}\;$
+    $\longleftrightarrow\;\exists\,j$;
+  \item 外层\quad 
+    $\displaystyle\bigcap_{l=1}^{\infty}\;$
+    $\longleftrightarrow\;\forall\,l$.
+\end{itemize}
+\end{proposition}
+如果仅写
+\[
+\bigcap_{k=1}^{\infty}E\bigl(|f_k(x)-f(x)|<1/l\bigr),
+\]
+则对应逻辑语句
+\[
+\forall\,k\ge1:\;|f_k(x)-f(x)|<1/l,
+\]
+也就是“从第一项开始所有项都满足”，这正是**一致收敛**的要求，本质上太严格，**不允许第 \(N\) 之前的任何例外**。
+
+而我们要的是**点态收敛**，即对任意精度 \(1/l\) 只需“存在”某个起始位置 \(j\)，从第 \(j\) 项开始才全部满足。故必须插入
+\[
+\bigcup_{j=1}^{\infty}\bigl(\cdots\bigr)
+\]
+来表达“存在 \(j\)”的松弛条件，从而将
+\[
+\forall\,k\ge1
+\]
+调整为
+\[
+\exists\,j:\;\forall\,k\ge j,
+\]
+才恰好描述“当 \(k\) 足够大时”这一点态收敛的本质。
+也就是说最内侧确保的是每个集合都有的元素，中间层的加入是为了从每层都有放宽到从第k项开始都有就行，最外层是为了l任意取值。
+\begin{theorem}[几乎处处收敛的条件]\label{thm:ae-convergence}
+设 $\{f_k\}_{k\in\mathbb{N}}$ 与 $f$ 均为集合 $E\subset\mathbb{R}^n$ 上的可测函数，且 $|f(x)|<\infty$ 对几乎所有 $x\in E$ 成立。若对每个 $l\in\mathbb{N}$，定义
+\[
+E_k^l \;:=\;\bigcup_{j=k}^{\infty}E\bigl(\lvert f_j(x)-f(x)\rvert\ge 1/l\bigr),
+\]
+且
+\[
+m\bigl(E_k^l\bigr)\;\longrightarrow\;0
+\quad (k\to\infty),
+\]
+则
+\[
+f(x)=\lim_{k\to\infty}f_k(x)
+\quad\text{几乎处处于 }E.
+\]
+当 $mE<\infty$ 时，上述条件的逆命题也成立。特别地，若对任意 $\varepsilon>0$ 有
+\[
+\sum_{k=1}^{\infty}m\bigl(E(\lvert f_k(x)-f(x)\rvert\ge \varepsilon)\bigr)
+<\infty,
+\]
+则亦有
+\[
+f(x)=\lim_{k\to\infty}f_k(x)
+\quad\text{几乎处处于 }E.
+\]
+\end{theorem}
+k之后所有|fk-f|大于等于1/l集合的并的测度趋紧取零
+
+|fk-f|>ε的测度在一定的fk之后必须趋紧于0才能保证级数收敛
+
+不仅要差的很小 差的很小的地方也要上零测集
+\begin{theorem}[一致收敛的条件]\label{thm:uniform-convergence}
+设 $\{f_k\}_{k\in\mathbb{N}}$ 与 $f$ 均为集合 $E\subset\mathbb{R}^n$ 上的可测函数，且 $|f(x)|<\infty$ 对几乎所有 $x\in E$ 成立。令 $A\subset E$，则 $\{f_k\}$ 在 $A$ 上一致收敛于 $f$ 当且仅当存在一个自然数序列 $\{k_\ell\}_{\ell\in\mathbb{N}}$，使得
+\[
+A\;\subset\;\bigcap_{\ell=1}^{\infty}
+\bigcap_{j=k_\ell}^{\infty}
+E\Bigl(\lvert f_j(x)-f(x)\rvert<1/\ell\Bigr).
+\]
+\end{theorem}
+A x 符合所有j从kl到无穷 fj(x)-f(x)<1/l 
+
+第二交集符号保证了上式中l可以是任意值从1到无限小
+\begin{proposition}[几乎处处收敛和一致收敛的关系]
+一致收敛是很强的收敛，如果函数列一致收敛那他的极限也是连续的。
+如果去除一个测度很小的集合，几乎处处收敛就能变成一致收敛
+    
+\end{proposition}
+\begin{theorem}[Egorov 定理]
+设 $\{f_k\}$ 是集合 $E$ 上一列可测函数，$m(E) < \infty$，  
+且 $\{f_k\}$ 在 $E$ 上几乎处处收敛于 $f$，并满足 $|f(x)| < \infty$ a.e. $x \in E$，  
+那么对任意 $\delta > 0$，存在可测集 $E_\delta \subset E$，使得 $m(E_\delta) < \delta$，  
+使得 $\{f_k\}$ 在 $E \setminus E_\delta$ 上一致收敛于 $f$。
+\end{theorem}
+测度有限 ，几乎处处收敛，函数几乎处处有限， 任意取一个测度大于0点数， 都能找到小于这个测度的集合使得， 在去掉这个集合后fk在剩下的集合中一致收敛。
+\begin{definition}[依测度收敛]
+设 $\{f_k\}_{k \in \mathbb{N}}$ 与 $f$ 均为集合 $E$ 上可测函数，$f$ 在 $E$ 上几乎处处有限，  
+若对任意 $\varepsilon > 0$，有
+\[
+\lim_{k \to \infty} m\left(E\left(|f_k - f| \geq \varepsilon\right)\right) = 0,
+\]
+则称 $\{f_k\}$ 在 $E$ 上依测度收敛于 $f$，记为 $f_k \xrightarrow{m} f \quad (k \to \infty)$。
+\end{definition}
+依测度收敛只要求fk不收敛的集合测度测度趋近于0。几乎处处收敛是去掉一个固定了零测集以后fk都是收敛的没有趋进过程是不变的。依测度收敛中不收敛的集合是可以变的只要最后测度趋近于0即可
+\begin{remark}
+依定义，若 $\{f_k\}$ 在 $E$ 上依测度收敛于 $f$，则总假设 $\{f_k\}$ 是 $E$ 上可测函数列，且 $|f(x)| < \infty$ 几乎处处成立。
+
+显然，一致收敛蕴涵依测度收敛。下面的定理表明，当 $m(E) < \infty$ 时，几乎处处收敛也蕴涵依测度收敛。
+\end{remark}
+\begin{theorem}[几乎处处收敛蕴涵依测度收敛]
+设可测函数列 $\{f_k\}$ 在 $E$ 上几乎处处收敛于 $f$，且 $|f(x)| < \infty$ a.e. $x \in E$ 且 $m(E) < \infty$，  
+则 $\{f_k\}$ 在 $E$ 上依测度收敛于 $f$。
+\end{theorem}
+
+\begin{proof}
+根据定义 3.3.1，$\forall l \in \mathbb{N}$，存在集合 $E_k^l$，满足
+\[
+m(E_k^l) \to 0 \quad (k \to \infty),
+\]
+其中 $E_k^l$ 如定义中所述。
+
+于是有：
+\[
+m\left(\{x \in E : |f_k(x) - f(x)| \geq \tfrac{1}{l} \} \right) \leq m(E_k^l) \to 0, \quad k \to \infty.
+\]
+
+这说明 $\{f_k\}$ 在 $E$ 上依测度收敛于 $f$。
+\end{proof}
+注意这个E的测度小于无穷这个条件非常关键没有这个条件依测度收敛和几乎处处收敛就没有关系。
+\begin{example}[依测度收敛和几乎处处收敛无关]
+设 $f_n = \chi_{[n, \infty)}$，则 $f_n$ 逐点收敛于 $0$，但对于 $1/2 > 0$，
+
+\[
+\lim_{n \to \infty} \mu\left(\left\{x \in X : |f_n(x) - f(x)| \ge \frac{1}{2} \right\} \right) 
+= \lim_{n \to \infty} \mu([n, \infty)) = \infty \ne 0
+\]
+
+因此 $f_n$ 不依测度收敛于 $f$。
+
+再考虑函数列：
+\[
+f_n = \chi_{[0,1]},\ \chi_{[0,1/2]},\ \chi_{[1/2,1]},\ \chi_{[0,1/3]},\ \chi_{[1/3,2/3]},\ \chi_{[2/3,1]},\ \dots
+\]
+
+\begin{enumerate}[(a)]
+  \item $f_n$ 在 $L^1$ 中收敛于 $0$，于是依测度收敛于 $0$；
+  \item $f_n$ 不几乎处处收敛于 $0$。
+\end{enumerate}
+
+\textbf{解释：}一致收敛 $\Rightarrow$ 依测度收敛。依测度收敛强调的是“误差超过 $\varepsilon$ 的集合测度趋于 0”，但不要求每个点的函数值收敛，所以积分可以趋于 0，而点值未必趋于 0。
+\end{example}
+
+\begin{proof}[一致收敛蕴涵依测度收敛]
+设 $f_n \overset{\text{一致}}{\longrightarrow} f$，则
+
+\[
+\sup_{x \in X} |f_n(x) - f(x)| \to 0
+\]
+
+给定 $\varepsilon > 0$，存在 $N \in \mathbb{N}$，使得当 $n > N$ 时，
+
+\[
+\sup_{x \in X} |f_n(x) - f(x)| < \varepsilon
+\]
+
+于是有：
+\[
+\mu\left(\left\{x \in X : |f_n(x) - f(x)| \ge \varepsilon \right\} \right) = 0
+\Rightarrow \lim_{n \to \infty} \mu(\cdots) = 0
+\]
+
+说明 $f_n$ 依测度收敛于 $f$。
+\end{proof}
+比如说我们固定一个点5，当然当k超过5的时候fk(x)就都是0了。其他数字都一样逐点收敛就是要先确定点。但是不管k取多大，X中的x让|fn（x）-f(x)|大于等于二分之的测度总是无穷的。但是如果把X中无穷的内一段换成一个具体的数，也就是原像集的测度有限，只需要k比X中最大值还大不收敛的测度就是0了。
+tip我们学习的时候要看清楚到底有几个变量，比如这里k和x都是可以变的量，再看每一个变量的变化有什么影响。
+\begin{theorem}[Riesz 定理]
+设 $\{f_k\}$ 在 $E$ 上依测度收敛于 $f$，那么存在 $\{f_k\}$ 的一个子列在 $E$ 上几乎处处收敛于 $f$。
+\end{theorem}
+想要从更宽泛的条件到更严格的条件一般构造子列很有用，我记得不收敛+有界也有收敛子列，看见有限什么的极为需要注意。
+\begin{corollary}[依测度收敛的极限的唯一性]
+    {fk}在E上依测度收敛那么极限是唯一的
+\end{corollary}
+\chapter{第四章Lebeague 积分}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \end{document}
 
