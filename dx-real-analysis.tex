@@ -825,7 +825,8 @@ $\chi$是希腊字符 叫chi 谐音是开“chi” 来自单词 characteristic�
 date 2025.8.5\\
 在上述两种情形中，若 $f$ 有界，那么收敛是一致的。
 \end{theorem}
-在构造可测函数 $f$ 的简单函数逼近时，引入“非负”和“渐升”的条件，是为了确保我们可以构造出一列简单函数 $\{\varphi_k\}$，使得它们逐点极限收敛于 $f$，即：
+在构造可测函数 $f$ 的简单函数逼近时，引入“非负”和“渐升”的条件，是为了使用单调极限逼近，必须非负才能用“单调收敛定理”，确保极限存在。我们这样才可以构造出一列简单函数
+ 。$\{\varphi_k\}$，使得它们逐点极限收敛于 $f$，即：
 \[
 \lim_{k \to \infty} \varphi_k(x) = f(x), \quad \forall x \in E,
 \]
@@ -1222,8 +1223,242 @@ tip我们学习的时候要看清楚到底有几个变量，比如这里k和x都
     {fk}在E上依测度收敛那么极限是唯一的
 \end{corollary}
 \chapter{第四章Lebeague 积分}
+\section{勒贝格积分}
+\begin{definition}[简单函数积分的定义]
+设 $\phi$ 是可测集 $E$ 上的非负简单函数，其在 $E$ 上的取值为 $0 \leq c_1 < c_2 < \cdots < c_N < \infty$，  
+记 $E_k := \{x \in E : \phi(x) = c_k\},\ k = 1, 2, \dots, N$。  
+我们称 $E = \bigcup_{k=1}^{N} E_k$ 为集合 $E$ 对应于 $\phi$ 的自然分解。  
+$\phi$ 在 $E$ 上的积分定义为：
+\[
+\int_E \phi\, dx := \sum_{k=1}^N c_k\, m(E_k).
+\]
+\end{definition}
 
+---
 
+\begin{remark}
+根据定义可知：
+\begin{enumerate}
+  \item 若 $\phi$ 在 $E$ 上恒为常数 $c$，则 $\displaystyle \int_E \phi\, dx = c\, m(E)$；
+  \item 若 $A \leq \phi(x) \leq B,\ \forall x \in E$，则有 $A\, m(E) \leq \displaystyle \int_E \phi\, dx \leq B\, m(E)$；
+  \item 若 $m(E) = 0$，则 $\displaystyle \int_E \phi\, dx = 0$。
+\end{enumerate}
+\end{remark}
+这里可以理解为测度是他的底，$c_k$是他的高，只不过这个底可以是离散的不连续的。
+\begin{theorem}[简单函数积分的性质-运算法则]
+设 $\phi,\psi$ 均为 $E$ 上非负简单函数，$c \geq 0$ 为常数，则：
+
+\begin{enumerate}[(i)]
+  \item $0 \leq \displaystyle \int_E \phi\,dx \leq \infty$；
+  \item $\displaystyle \int_E (c\phi)\,dx = c \int_E \phi\,dx$；
+  \item $\displaystyle \int_E (\phi + \psi)\,dx = \int_E \phi\,dx + \int_E \psi\,dx$；
+  \item 若 $E = E_1 \cup E_2$，且 $E_1, E_2$ 为不相交可测集，则
+  \[
+  \int_E \phi\,dx = \int_{E_1} \phi\,dx + \int_{E_2} \phi\,dx；
+  \]
+  \item 若 $\phi(x) \leq \psi(x),\ \forall x \in E$，则
+  \[
+  \int_E \phi\,dx \leq \int_E \psi\,dx。
+  \]
+\end{enumerate}
+\end{theorem}
+\section{非负可测函数积分}
+\begin{definition}[非负可测函数的积分]\label{def:nonnegative_integral}
+可测集 $E$ 上非负可测函数 $f$ 的积分定义为
+\[
+\int_E f\,dx := \lim_{k \to \infty} \int_E \phi_k\,dx,
+\]
+其中 $\{\phi_k\}_{k=1}^\infty$ 为 $E$ 上一列简单函数，满足：
+\begin{equation}
+0 \leq \phi_1(x) \leq \phi_2(x) \leq \cdots, \qquad \lim_{k \to \infty} \phi_k(x) = f(x), \quad \forall x \in E.
+\label{eq:approx_simple}
+\end{equation}
+
+若 $\int_E f\,dx < \infty$，则称 $f$ 在 $E$ 上是可积的，记为 $f \in L(E)$。
+\end{definition}
+这个积分有限就是重点。
+可积分的定义本来就是要把在f上的积分转换为简单函数的积分，要求简单函数列最终收敛到f好让又极限有意义
+
+这是 **勒贝格可积函数空间** 的记法，其中：
+
+- **L**：代表 **Lebesgue**（勒贝格），
+- **E**：表示函数的定义域，也就是我们积分的区域，
+- 所以 L(E) 表示的是所有在集合 E 上勒贝格可积的函数的集合。
+\begin{lemma}[4.2.1]
+设 $\psi,\ \{\phi_k\}_{k=1}^\infty$ 均为 $E$ 上简单函数，满足
+\[
+0 \le \phi_1(x) \le \phi_2(x) \le \cdots,\quad 
+\psi(x) \le \lim_{k \to \infty} \phi_k(x),\quad \forall x \in E,
+\]
+则
+\[
+\int_E \psi\, dx \le \lim_{k \to \infty} \int_E \phi_k\, dx.
+\]
+\end{lemma}
+极限和选取的逼近函数列无关。为什么要引入λ而不是直接让λ=1不写呢？
+我们要处理的集合是
+\[
+E_k = E(\varphi_k \ge \lambda c).
+\]
+如果直接取 $\lambda = 1$，那就是：
+\[
+E_k = E(\varphi_k \ge c).
+\]
+\textbf{风险}：当 $\varphi_k \to \psi \equiv c$ 的过程中，可能存在许多点满足
+\[
+\varphi_k(x) < c \quad \text{但} \quad \lim_{k\to\infty} \varphi_k(x) = c.
+\]
+这些点在极限时应属于 $E$，但在每个有限的 $k$ 中，它们都不在 $E_k$ 里，因此
+\[
+m(E_k) \uparrow m(E') \quad \text{可能有} \quad m(E') < m(E),
+\]
+从而极限失效。
+\begin{proof}
+不妨设 $\psi$ 在 $E$ 上恒为常数 $c$，否则按 $\psi$ 的取值将 $E$ 划分为有限个子集，
+在每个子集上分别处理。不妨设 $c>0$，否则不等式显然成立。  
+$\forall\, 0<\lambda<1$，作
+\[
+E_k := E(\varphi_k \ge \lambda c), \quad \forall k \in \mathbb{N}.
+\]
+易见：
+\[
+E_1 \subset E_2 \subset \cdots, \quad 且 \quad E = \bigcup_{k\in\mathbb{N}} E_k.
+\]
+于是
+\[
+\int_E \varphi_k \, dx
+= \int_{E_k} \varphi_k \, dx + \int_{E\setminus E_k} \varphi_k \, dx
+\ge \int_{E_k} \varphi_k \, dx
+\ge \lambda c\, m(E_k).
+\]
+令 $k \to \infty$，得
+\[
+\lim_{k\to\infty} \int_E \varphi_k \, dx
+\ge \lambda c \lim_{k\to\infty} m(E_k)
+= \lambda c\, m(E)
+= \lambda \int_E \psi \, dx.
+\]
+令 $\lambda \to 1$ 即得证。
+\end{proof}
+\begin{theorem}[4.2.1]
+设 $f$ 为 $E \subset \mathbb{R}^n$ 上非负可测函数，$\{\phi_k\}_{k=1}^\infty$ 为 $E$ 上一列简单函数，满足 (4.2.2)函数列单增，函数列极限=f，那么
+\[
+\lim_{k \to \infty} \int_E \phi_k \, dx
+= \sup_{\phi \in \Phi(f, E)} \int_E \phi \, dx,
+\]
+其中 $\Phi(f,E)$ 为 $E$ 上满足 $\phi(x) \le f(x)$ 的非负简单函数 $\phi$ 所构成的集合。
+\end{theorem}
+
+积分的上极限就是简单函数的积分的上界
+\begin{proof}
+显然对任意的 $k \in \mathbb{N}$，有 $\varphi_k \in \Phi(f, E)$，所以
+\[
+\lim_{k \to \infty} \int_E \varphi_k \, dx
+\le \sup_{\varphi \in \Phi(f, E)} \int_E \varphi \, dx.
+\]
+
+为证相反的不等式，$\forall\, \varphi \in \Phi(f, E)$，我们有
+\[
+\varphi(x) \le f(x) = \lim_{k \to \infty} \varphi_k(x), \quad \forall\, x \in E,
+\]
+据引理 4.2.1 可知
+\[
+\int_E \varphi \, dx \le \lim_{k \to \infty} \int_E \varphi_k \, dx,
+\]
+由 $\varphi$ 的任意性即知理成立。
+
+由于等式 (4.2.3) 的右端与函数列 $\{\varphi_k\}$ 的选择无关，这表明积分的定义式 (4.2.1) 的右端实际上与 $\{\varphi_k\}$ 的选择无关。根据定理 4.2.1，我们有非负可测函数的积分的如下等价定义。
+\end{proof}
+一个经典证明，证明需要同时证明大于等于号和小于等于号，用一般的函数证明小于等于，用极限模式证明大于等于。一个方向用极限思想，另一个方向用一般函数的任意性
+\begin{definition}[4.2.2 非负可测函数积分的等价定义]
+$E$ 上非负可测函数 $f$ 的积分定义为
+\[
+\int_E f \, dx := \sup_{\phi \in \Phi(f, E)} \int_E \phi \, dx .
+\]
+\end{definition}
+\begin{theorem}[积分的基本性质]\label{thm:basic_properties_integral}
+设 $f, g$ 均为 $E$ 上非负可测函数，$c \ge 0$ 为一常数，则  
+\begin{enumerate}[(i)]
+    \item $0 \le \int_E f \, dx \le \infty$；
+    \item $\int_E (cf) \, dx = c \int_E f \, dx$；
+    \item $\int_E (f+g) \, dx = \int_E f \, dx + \int_E g \, dx$；
+    \item 若 $E = E_1 \cup E_2$，$E_1, E_2$ 是不相交的可测集，则  
+    \[
+        \int_E f \, dx = \int_{E_1} f \, dx + \int_{E_2} f \, dx；
+    \]
+    \item 若 $f(x) \le g(x)$，$\forall x \in E$，则  
+    \[
+        \int_E f \, dx \le \int_E g \, dx；
+    \]
+    \item 若 $mE = 0$，则  
+    \[
+        \int_E f \, dx = 0。
+    \]
+\end{enumerate}
+\end{theorem}
+
+\noindent 证明：利用定义 4.2.1 可直接证明 (i)--(iv) 和 (vi)，利用定义 4.2.2 可直接证明 (v)。
+\begin{theorem}[Chebyshev 不等式]
+设 $f$ 为 $E$ 上非负可测函数，那么对任意 $a>0$，有
+\[
+m\big(E(f \ge a)\big) \le \frac{1}{a} \int_E f \, dx.
+\]
+\end{theorem}
+证明非负可积函数上几乎处处有限，积分上0函数几乎处处为0.
+很好的一种放缩方法。
+\begin{theorem}[可积函数是几乎处处有限的]
+给定非负函数 $f \in L(E)$，有
+\[
+mE(f = \infty) = 0.
+\]
+\end{theorem}
+
+\begin{proof}
+对任意的 $a>0$，由于 $E(f = \infty) \subset E(f \ge a)$，所以利用 Chebyshev 不等式得
+\[
+mE(f = \infty) \le mE(f \ge a) \le \frac{1}{a} \int_E f \, dx.
+\]
+令 $a \to \infty$，得 $mE(f = \infty) = 0$.
+\end{proof}
+\begin{theorem}[非负函数积分为零的条件]
+设 $f$ 为 $E$ 上非负可测函数，则
+\[
+\int_E f\, dx = 0 \quad \Longleftrightarrow \quad f(x) = 0 \ \text{a.e.} \ x \in E.
+\]
+\end{theorem}
+
+\begin{proof}
+\textbf{充分性：} 记 $E_1 = E(f \neq 0)$，$E_2 = E \setminus E_1$，则 $mE_1 = 0$。于是
+\[
+\int_E f\, dx = \int_{E_1} f\, dx + \int_{E_2} f\, dx = 0.
+\]
+
+\textbf{必要性：} $\forall k \in \mathbb{N}$，由 Chebyshev 不等式，有
+\[
+mE\left( f \ge \frac{1}{k} \right) \le 
+k \int_E f\, dx = 0.
+\]
+而
+\[
+E(f \neq 0) = \bigcup_{k=1}^\infty E\left( f \ge \frac{1}{k} \right),
+\]
+所以 $mE(f \neq 0) = 0$。
+\end{proof}
+\begin{theorem}[积分的绝对连续性]
+设非负可测函数 $f\in L^1(E)$。则对任意 $\varepsilon>0$，存在 $\delta>0$，
+使得对任意可测 $E_0\subset E$，当 $m(E_0)<\delta$ 时，
+\[
+\int_{E_0} f\,dx < \varepsilon .
+\]
+\end{theorem}
+
+\begin{definition}[分布函数]
+设 $f$ 是 $E$ 上的可测函数，称
+\[
+d_f(\alpha) := m\big(E(|f| > \alpha)\big), \quad \forall \alpha \ge 0
+\]
+为 $f$ 的分布函数。
+\end{definition}
 
 
 
