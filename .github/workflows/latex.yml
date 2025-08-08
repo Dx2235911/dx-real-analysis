@@ -53,3 +53,7 @@ jobs:
         with:
           name: dx-real-analysis-pdf
           path: dx-real-analysis.pdf
+- name: List files after build
+  run: |
+    pwd
+    ls -R
