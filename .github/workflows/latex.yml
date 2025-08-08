@@ -46,14 +46,15 @@ jobs:
       # 6. 第三遍 XeLaTeX 编译（确保所有引用正确）
       - name: Final XeLaTeX compilation
         run: xelatex -interaction=nonstopmode dx-real-analysis.tex || true
-
+      - name: List files after build
+        run: |
+          pwd
+          ls -R这步加在哪里
       # 7. 上传生成的 PDF 作为 Artifact
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
         with:
           name: dx-real-analysis-pdf
           path: dx-real-analysis.pdf
-- name: List files after build
-  run: |
-    pwd
-    ls -R
+
+
