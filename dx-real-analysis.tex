@@ -1459,9 +1459,17 @@ d_f(\alpha) := m\big(E(|f| > \alpha)\big), \quad \forall \alpha \ge 0
 \]
 为 $f$ 的分布函数。
 \end{definition}
+自变量是α也就是f的取值，因变量是|f|>α的原像集的测度
+\begin{theorem}[积分的分布函数表达]
+设 $f$ 是 $E$ 上的可测函数，那么 $d_f$ 是 $[0, \infty)$ 上单调递减且右连续的函数，满足
+\[
+\int_E |f|\, dx = \int_{0}^{\infty} d_f(\alpha) \, d\alpha.
+\tag{4.2.4}
+\]
+\end{theorem}
+这个积分如何理解呢，我们那一个简单的函数图像举例y=-x（x-6）在x∈(0,6)的积分演示一下。
 
-
-
+之前我们学的积分都是竖着积的这个是横着积的。
 
 
 
