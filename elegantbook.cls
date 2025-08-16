@@ -34,6 +34,7 @@
 \DeclareVoidOption{blue}{\ekv{color=blue}}
 \DeclareVoidOption{gray}{\ekv{color=gray}}
 \DeclareVoidOption{black}{\ekv{color=black}}
+\DeclareVoidOption{purple}{\ekv{color=purple}}
 \DeclareVoidOption{nocolor}{\ekv{color=none}}
 
 \DeclareVoidOption{chinese}{\ekv{scheme=chinese}}
@@ -267,6 +268,12 @@
   \definecolor{second}{RGB}{230,90,7}%
   \definecolor{third}{RGB}{0,160,152}%
 }{\relax}
+\ifdefstring{\ELEGANT@color}{purple}{
+  \definecolor{structurecolor}{RGB}{102, 0, 153} % 深紫
+  \definecolor{main}{RGB}{123, 31, 162}          % 主色调紫
+  \definecolor{second}{RGB}{186, 104, 200}       % 次要浅紫
+  \definecolor{third}{RGB}{156, 39, 176}         % 辅助紫
+}{\relax}
 \ifdefstring{\ELEGANT@color}{cyan}{
   \definecolor{structurecolor}{RGB}{31,186,190}%
   \definecolor{main}{RGB}{59,180,5}%
@@ -297,6 +304,11 @@
 \definecolor{main1}{RGB}{0,120,2}%
 \definecolor{second1}{RGB}{230,90,7}%
 \definecolor{third1}{RGB}{0,160,152}%
+% 紫色主题的备用色
+\definecolor{structure1}{RGB}{102,0,153}   % 深紫
+\definecolor{main1}{RGB}{123,31,162}       % 主紫
+\definecolor{second1}{RGB}{186,104,200}    % 浅紫
+\definecolor{third1}{RGB}{156,39,176}      % 辅助紫
 %cyan color
 \definecolor{structure2}{RGB}{31,186,190}%
 \definecolor{main2}{RGB}{59,180,5}%
@@ -411,6 +423,7 @@
   \newcommand{\notename}{笔记}
   \renewcommand*{\proofname}{证明}
   \newcommand{\definitionname}{定义}
+  \newcommand{\dxtipname}{东邪的tip}
   \newcommand{\theoremname}{定理}
   \newcommand{\axiomname}{公理}
   \newcommand{\postulatename}{公设}
@@ -917,6 +930,19 @@
           {title=\definitionname~\thetcbcounter}
       },
     IfBooleanTF={#3}{label=#4}{label={def:#4}}}
+    %我自己的框
+    \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt]{dxtip}{ g o t\label g }{
+    common,dxstyle,
+    IfValueTF={#1}
+      {title={\dxtipname~\thetcbcounter\ (#1)}}
+      {
+        IfValueTF={#2}
+          {title={\dxtipname~\thetcbcounter\ (#2)}}
+          {title=\dxtipname~\thetcbcounter}
+      },
+    IfBooleanTF={#3}{label=#4}{label={dxtip:#4}}}
+
+
   % \newtcbtheorem[auto counter,number within=chapter]{theorem}{\theoremname}{thmstyle}{thm}
   \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt]{theorem}{ g o t\label g }{
     common,thmstyle,

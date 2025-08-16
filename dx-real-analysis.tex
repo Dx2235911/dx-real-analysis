@@ -7,7 +7,7 @@
 
 \date{25/5/2025}
 
-\bioinfo{自定义}{信息}
+\bioinfo{自定义}{数学}
 
 \extrainfo{不要以为抹消过去，重新来过，即可发生什么改变。—— 比企谷八幡}
 
@@ -1468,18 +1468,503 @@ d_f(\alpha) := m\big(E(|f| > \alpha)\big), \quad \forall \alpha \ge 0
 \]
 \end{theorem}
 这个积分如何理解呢，我们那一个简单的函数图像举例y=-x（x-6）在x∈(0,6)的积分演示一下。
+\href{https://www.bilibili.com/video/BV1CybKzmEWN}{【积分的分布函数表达】Bilibili 视频}\\
+之前我们学的积分都是竖着积的这个是横着积的。普通的黎曼积分是从左到右或者从右到左竖着积分，lebeague积分则是离散的竖着积分高是函数值，长是定义域测度。
+此时我对为什么对函数反复强调非负包括为什么要弄出负部有了新的想法，因为积分就是求面积\\
+\begin{theorem}[4.2.8]
+设 $f$ 是 $E \subset \mathbb{R}^n$ 上非负可测函数，那么
+\[
+G(f,E) := \{ (x,y) \mid x \in E, \; 0 \le y < f(x) \}
+\]
+是 $\mathbb{R}^{n+1}$ 中可测集，且
+\[
+\int_E f \, dx = m \, G(f,E) .
+\]
+\end{theorem}
+高维函数的测度=低维函数的积分。
+这个G(f,E）就描述的是x这个上有一条长为f（x）的线。\\
+G(f,E)固定x点y会从0开始增大直到f(x),这就完成了点动成线，移动x就完成了线动成面。\\
+f的积分就是G（f，E）的测度。
+\href{https://www.bilibili.com/video/BV1aAb5zUET4}{【实变函数可视化】Bilibili 视频}
+\section{一般可测函数积分}
+\begin{definition}[4.3.1]
+设 $f$ 为集合 $E$ 上可测函数。若 $f^{+}, f^{-} \in L(E)$，则称 $f$ 在 $E$ 上可积，记为 $f \in L(E)$；  
+若 $f^{+} \in L(E)$ 与 $f^{-} \in L(E)$ 至少有一个成立，则称 $f$ 在 $E$ 上有积分分值，其值定义为
+\[
+\int_E f\,dx := \int_E f^{+}\,dx - \int_E f^{-}\,dx .
+\]
+\end{definition}
 
-之前我们学的积分都是竖着积的这个是横着积的。
+\begin{remark}
+当 $E \subset \mathbb{R}$ 为一区间时，设其左、右端点为 $a,b$，习惯上我们将
+\[
+\int_E f\,dx
+\]
+记为
+\[
+\int_a^b f\,dx.
+\]
+显然，若 $f$ 本身是非负可测函数，则有 $f = f^{+}$, $f^{-} = 0$，此时按定义 4.3.1 所定义的积分与将 $f$ 作为非负可测函数按 4.2 节所定义的积分是一致的。
+\end{remark}
+就是把他们分成正的部分和负的部分，负的部分去相反值，然后在积分号前加负号
+\begin{theorem}[4.3.1]
+设 $f, g$ 均为 $E$ 上有定义的实函数，$f$ 在 $E$ 上可测且有积分分值，  
+若 $g(x) = f(x)$ a.e. $x \in E$，则 $g$ 也在 $E$ 上有积分分值，且  
+\[
+\int_E g\,dx = \int_E f\,dx.
+\]
+\end{theorem}
+定理4.3.1f在E上有积分值 和他几乎处处相等的函数积分值和他相等
+\begin{theorem}[4.3.2 积分的基本性质]
+设 $f, g$ 均在 $E$ 上有积分值，$c \in \mathbb{R}$ 为一常数，则：
+
+\begin{enumerate}[(i)]
+    \item $cf$ 也在 $E$ 上有积分值，且
+    \[
+    \int_E (cf)\,dx = c \int_E f\,dx;
+    \]
+    
+    \item 若 $f, g$ 的积分不为异号无穷大，则 $f + g$ 在 $E$ 上也有积分值，且
+    \[
+    \int_E (f+g)\,dx = \int_E f\,dx + \int_E g\,dx;
+    \]
+    
+    \item 若 $E = E_1 \cup E_2$，$E_1, E_2$ 是不相交的可测集，则 $f$ 在 $E_1$ 和 $E_2$ 上均有积分值，不为异号无穷大，且
+    \[
+    \int_E f\,dx = \int_{E_1} f\,dx + \int_{E_2} f\,dx;
+    \]
+    
+    \item 若 $f(x) \le g(x)$ a.e. $x \in E$，则
+    \[
+    \int_E f\,dx \le \int_E g\,dx.
+    \]
+\end{enumerate}
+\end{theorem}
+
+性质1 ，常数可以提出来。\\
+性质2 不为异号无穷大加法可以拆开，拆括号蕴藏了同构。\\
+性质3，如果E1，E2不相交可以吧E上的积分拆分成E1上的积分加上E2上的积分。\\
+性质4，不等号的传递性\\
+\begin{theorem}[4.3.3]
+设 $f$ 在 $E$ 上有积分值，则
+\[
+\left| \int_E f\,dx \right| \le \int_E |f|\,dx.
+\]
+\end{theorem}
+
+\begin{proof}
+\[
+\left| \int_E f\,dx \right|
+= \left| \int_E f^{+}\,dx - \int_E f^{-}\,dx \right|
+\le \int_E f^{+}\,dx + \int_E f^{-}\,dx
+= \int_E |f|\,dx.
+\]
+Lebesgue 积分通过正部 $f^{+}$ 和负部 $f^{-}$ 的积分来定义函数 $f$ 的积分。  
+因此函数可积必须是其正部与负部都可积。这立即导出上述结果。
+\end{proof}
+\begin{theorem}[4.3.4]
+设 $f$ 为 $E$ 上可测函数，那么 $f$ 在 $E$ 上可积当且仅当 $|f|$ 在 $E$ 上可积。
+\end{theorem}
+
+\begin{proof}
+由 $|f| = f^{+} + f^{-}$ 得
+\[
+\int_E |f|\,dx
+= \int_E f^{+}\,dx + \int_E f^{-}\,dx.
+\]
+所以 $\int_E f^{+}\,dx$ 和 $\int_E f^{-}\,dx$ 均为有限值当且仅当 $\int_E |f|\,dx$ 为有限值。
+\end{proof}
+
+\noindent\textbf{注意：} 这个性质与 Riemann 积分是不同的。读者不难给出绝对值 Riemann 可积而自身不是 Riemann 可积的例子，并由此体会这一差异的根源所在。
+证明常用。
+黎曼积分绝对值可积可不能说原函数可积
+
+重要两个点: 可测函数, 绝对值有限.
+\section{积分极限定理}
+学习目的：函数列都能在E上积分，函数列极限也要在E上可积。
+\begin{theorem}[4.4.1 Levi 定理]
+设 $\{f_k\}$ 是 $E$ 上一列渐升的非负可测函数，$\lim\limits_{k \to \infty} f_k = f$ a.e. $x \in E$，则
+\[
+\lim_{k \to \infty} \int_E f_k\,dx = \int_E f\,dx.
+\]
+\end{theorem}
+函数列积分的极限=函数列极限的积分
+渐升函数列，非负可测函数，函数列极限几乎处处可测\\
+
+积分号和积分号互换\\
+
+构造的时候尽量符合Levi条件\\
+\begin{corollary}[4.4.1 逐项积分定理]
+设 $\{f_k\}$ 是 $E$ 上非负可测函数列，
+\[
+f(x) = \sum_{k=1}^\infty f_k(x) \quad \text{a.e. } x \in E,
+\]
+则
+\[
+\int_E f\,dx = \sum_{k=1}^\infty \int_E f_k\,dx.
+\]
+\end{corollary}
+
+\begin{proof}
+作
+\[
+g_k(x) := \sum_{j=1}^k f_j(x),
+\]
+则 $\{g_k\}$ 满足 Levi 定理的条件，利用 Levi 定理即获证。
+\end{proof}
+
+\noindent
+\textbf{说明：} Levi 定理中要求 $\{f_k\}$ 是单调的，如果去掉这个条件，结论一般不再成立。
+前面的例子
+\[
+f_k(x) = k \chi_{(0,\,1/k)}(x), \quad x \in (0,1),
+\]
+就说明了这一点。然而，我们有如下较弱的结论。
+
+\begin{theorem}[Fatou 引理]
+设 $\{ f_k \}$ 是 $E$ 上非负可测函数数列，则
+\[
+\int_E \lim_{k \to \infty} f_k \, dx \le \lim_{k \to \infty} \int_E f_k \, dx.
+\]
+\end{theorem}
+
+\begin{proof}
+作
+\[
+g_k(x) := \inf_{j \ge k} f_j(x),
+\]
+则 $\{ g_k \}$ 满足 Levi 定理的条件，且
+\[
+\lim_{k \to \infty} g_k =\underline{\lim}_{k \to \infty} f_k
+\]
+利用 Levi 定理得
+\[
+\int_E \lim_{k \to \infty} f_k \, dx
+= \lim_{k \to \infty} \int_E g_k \, dx
+= \lim_{k \to \infty} \int_E g_k \, dx
+\le \lim_{k \to \infty} \int_E f_k \, dx.
+\]
+\end{proof}
+\[\underline{\lim}_{k \to \infty} f_k
+\] 的数学定义就是 下极限（limit inferior），它表示序列 ($f_k$) 从某一项开始往后的最小上界的极限。
+\begin{itemize}
+    \item $\lim$ 要求“所有足够靠后的项”都接近一个值；
+    \item $\underline{\lim}$ 则是“所有足够靠后的最小趋势”；
+    \item 它代表序列（或函数列）在无穷远处的“稳定下界”。
+\end{itemize}
 
 
+考虑数列
+\[
+a_k = (-1)^k + \frac{1}{k}.
+\]
+普通极限 $\lim a_k$ 不存在（因为奇偶项分别在 $1$ 附近和 $-1$ 附近振荡），但是
+\[
+\underline{\lim}_{k \to \infty} a_k = -1,
+\]
+因为在序列的尾部，总能找到无限多项接近 $-1$，而且这是尾部下确界的极限。
+虽然去掉单调性后不能保证 Levi 定理的结论成立，但如果补加其他条件，Levi 定理的结论是可以恢复的。
+一个重要的情况是如下的 Lebesgue 控制收敛定理。
+要求非负可测，没有Levi的渐升和几乎处处收敛的性质。
+Fatou定理 函数列下极限的积分小于等于函数列积分的下极限
+$g_k$(x)是$f_k$(x)到$f_j$(x)中最小的函数。 对每个 x 横坐标分别去看它在后面所有函数中的最小值。这样保证整个$g_k$是单增函数列，后面两个极限相等
+\begin{theorem}[Lebeague 控制收敛定理]
+设 $\{f_k\}$ 是 $E$ 上一列可测函数，满足
+\[
+\lim_{k \to \infty} f_k(x) = f(x) \quad \text{a.e. } x \in E,
+\]
+若存在 $F \in L(E)$，使得
+\[
+|f_k(x)| \le F(x) \quad \text{a.e. } x \in E, \quad \forall k \in \mathbb{N},
+\]
+则
+\[
+\lim_{k \to \infty} \int_E f_k \, dx \;=\; \int_E f \, dx .
+\]
+\end{theorem}
+几乎处处收敛，如果在一个F函数在E上可测且,fk（x）的绝对值小于F（x）几乎处处成立。
+ 函数列极限的积分就是和函数的积分
+控制收敛就是用F来控制的
+\begin{corollary}[有界收敛定理]
+设 $\{f_k\}$ 为 $E$ 上可测函数列，存在常数 $M>0$ 使
+\[
+|f_k(x)| \le M \quad \text{a.e. } x \in E,\ \forall k\in\mathbb{N},
+\]
+且 $m(E)<\infty$，并且
+\[
+\lim_{k\to\infty} f_k(x) = f(x) \quad \text{a.e. } x \in E.
+\]
+则
+\[
+\lim_{k\to\infty} \int_E f_k\,dx = \int_E f\,dx.
+\]
+\end{corollary}
+一致有界函数，对于每一个$f_k$（x)都有上界M，原像集有限，几乎处处收敛。
+那么积分的极限就是极限的积分，刚才是那函数F控制的现在是拿一个具体的数M控制的。
+\begin{corollary}[逐项积分定理]
+设 $\{f_k\}$ 是 $E$ 上一列可测函数，满足
+\[
+\sum_{k=1}^{\infty} \int_E |f_k|\, dx < \infty,
+\]
+则 $f := \sum_{k=1}^{\infty} f_k$ 在 $E$ 上几乎处处绝对收敛，且
+\[
+\int_E f\, dx = \sum_{k=1}^{\infty} \int_E f_k\, dx.
+\]
+\end{corollary}
+\begin{proof}
+令
+\[
+F(x):=\sum_{k=1}^{\infty}|f_k(x)|,\qquad 
+F_k(x):=\sum_{j=1}^{k}f_j(x),\quad k\in\mathbb{N}.
+\]
+则 $F$ 为 $E$ 上非负可测函数，并由逐项积分定理得
+\[
+\int_E F\,dx=\sum_{k=1}^{\infty}\int_E |f_k|\,dx<\infty .
+\]
+从而 $F\in L(E)$，进而
+\[
+\sum_{k=1}^{\infty}|f_k(x)|=F(x)<\infty\quad \text{a.e. }x\in E .
+\]
+显然对每个 $k$ 都有 $|F_k(x)|\le F(x)$，且
+\[
+\lim_{k\to\infty}F_k(x)=f(x)\quad \text{a.e. }x\in E .
+\]
+由 Lebesgue 受控收敛定理（以 $F$ 为控制函数）得到
+\[
+\int_E f\,dx
+=\lim_{k\to\infty}\int_E F_k\,dx
+=\lim_{k\to\infty}\sum_{j=1}^{k}\int_E f_j\,dx
+=\sum_{k=1}^{\infty}\int_E f_k\,dx .
+\]
+证毕。
+\end{proof}
+F(x)是绝对值和函数，$F_k$是部分和函数，
+f是和函数，第一个等号用Lebeague控制收敛定理把极限符号移到积分外面，第二个等号把求和符号移到了外面用的是推论4.1逐项积分定理，最后一步把极限号和求和符号结合在来一起。
+\begin{corollary}[分片积分分定理]
+设 $f$ 是 $E$ 上可测函数，$\{E_k\}$ 是 $E$ 的一列互不相交的可测子集，满足 $E = \bigcup_{k=1}^\infty E_k$，那么当 $f \in L(E)$ 或 $f$ 非负时，有
+\[
+\int_E f\,dx = \sum_{k=1}^\infty \int_{E_k} f\,dx.
+\]
+\end{corollary}
+
+\begin{proof}
+作 $\tilde{E}_k := \bigcup_{j=1}^k E_j$，$\forall k \in \mathbb{N}$，则
+\[
+\tilde{E}_1 \subset \tilde{E}_2 \subset \cdots, \quad \text{且} \quad E = \bigcup_{k=1}^\infty \tilde{E}_k.
+\]
+于是
+\[
+\int_E f\,dx 
+= \lim_{k \to \infty} \int_{\tilde{E}_k} f\,dx
+= \lim_{k \to \infty} \int_{\bigcup_{j=1}^k E_j} f\,dx
+= \lim_{k \to \infty} \sum_{j=1}^k \int_{E_j} f\,dx
+= \sum_{k=1}^\infty \int_{E_k} f\,dx.
+\]
+\end{proof}
+要求互不相交子集并起来就是E  ，还要求|f|积分有限或者 f非负\\
+
+在E上的积分 就是所有Ek上积分的和 \\
+
+第一个等号用的定理4.4.5 第二个等号上定义里面的,第三个括号就是因为互不相交\\
+\begin{theorem}[积分区域极限定理]
+设 $f$ 是 $E$ 上可测函数，$E_1 \subset E_2 \subset \cdots$ 是 $E$ 的一列可测子集，$\bigcup_{k \in \mathbb{N}} E_k = E$，那么当 $f \in L(E)$ 或 $f$ 非负时，有
+\[
+\int_E f\, dx = \lim_{k \to \infty} \int_{E_k} f\, dx.
+\]
+\end{theorem}
+
+\begin{proof}
+作 $f_k(x) := f(x) \chi_{E_k}(x)$，$\forall x \in E$。由 $\bigcup_{k=1}^\infty E_k = E$ 可知：$\forall x \in E$，存在 $N \in \mathbb{N}$，使得 $x \in E_N$。于是当 $k \ge N$ 时，有 $x \in E_k$，从而 $f_k(x) = f(x) \chi_{E_k}(x) = f(x)$，所以 $\lim_{k \to \infty} f_k(x) = f(x)$。
+
+\noindent (i) 当 $f$ 非负时，因为 $E_k \subset E_{k+1}$，所以 $0 \le f_k \le f_{k+1}$，因此 Levi 定理的函数列单增条件满足。
+
+\noindent (ii) 当 $f \in L(E)$ 时，由于 $|f_k| \le |f|$，所以 Lebesgue 控制收敛定理的条件满足。
+
+不管在哪种情况下，均有
+\[
+\int_E f\, dx = \lim_{k \to \infty} \int_E f_k\, dx = \lim_{k \to \infty} \int_{E_k} f\, dx.
+\]
+\end{proof}
+Ek的极限是E f要求可测函数 f 可积或者f非负区域积分的极限 
+
+因为这个区间是一个包含着一个点所以任意一个x，都第一次出现后被之后的所有区间包含。
+fk是一个新的函数 他在Ek上等于f(x)在Ek之外等于0
+
+这里描述的是一个点行为 因为一个点在N之后所有的极限
+
+k趋紧无穷大得多时候所有的x都在Ek上有所以特征函数的值就是1
+\section{积分的替换}
+\begin{definition}[可测映射]
+设 $A, B$ 是两个可测集，$T: A \to B$ 是一个映射。  
+如果对 $B$ 的任意可测子集 $E$，有 $T^{-1}(E)$ 是 $A$ 的可测子集，则称 $T$ 是可测映射。
+\end{definition}
+如果B的任意可测自己的原像集也是可测集 T就是可测映射需要再看书。\\
+由于可测函数可以用简单函数来逼近，因此，$B$ 上可测函数 $f$ 的积分可以用形如
+\[
+\sum_{k=1}^N c_k\, mE_k
+\]
+的和来近似，其中 $f$ 在 $E_k$ 上取值常数 $c_k$。显然，$f \circ T$ 在原像集 $T^{-1}(E_k)$ 上取值 $c_k$。因此，如果能将 $mE_k$ 表示为 $T^{-1}(E_k)$ 的测度的倍数，那么上述和就可以用 $f \circ T$ 在 $A$ 上的积分来表示。
+foT是两个映射，这两个映射完了以后$T^-1$($E_k$)上面的点也映射到$c_k$上了，但是此时foT复合函数的原像集的测度和f函数原像集的测度不一样大需要调整才能替换。\\
+\noindent\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=0.5\linewidth]{image.png}
+  \captionof{figure}{Enter Caption}
+  \label{fig:placeholder}
+\end{minipage}
+但一般而言，积分变量替换所致集合的测度改变在各点处是不均匀的，例如
+$T x = x^{2}$，将测度为 $1$ 的集合 $[k,\,k+1]$ 变换为
+$[k^{2},\, (k+1)^{2}]$，后者的测度是 $2k+1$，对于不同的 $k$ 大小是不同的。
+因此，集合 $E$ 的测度 $mE$ 与其原像集 $T^{-1}(E)$ 的测度通常不是均匀倍数关系。
+为此，我们引入一个局部倍数因子 $\rho(x)$，即假设 $mE$ 与 $T^{-1}(E)$ 满足如下关系：
+\begin{equation}
+mE = \int_{T^{-1}(E)} \rho\,dx, 
+\quad \forall E \in \mathcal{M}, \ E \subset B.
+\tag{4.5.1}
+\end{equation}
+
+在此假设下，我们将证明如下的变量替换公式：
+\begin{equation}
+\int_{B} f\,dx 
+= \int_{A} (f \circ T) \,\rho\,dx.
+\tag{4.5.2}
+\end{equation}
 
 
+\begin{theorem}[积分的变量替换]\label{thm:4.5.1}
+设 $T: A \to B$ 是一个可测映射，$f$ 是 $B$ 上的一个可测函数。若存在 $A$ 上非负可测函数 $\rho$ 使得式{4.5.1} 成立，那么，$f$ 在 $B$ 上有积分值当且仅当 $(f \circ T)\rho$ 在 $A$ 上有积分值。此时，变量替换公式{4.5.2} 成立。
+\end{theorem}
+在定理~4.5.1 中，条件“存在 $A$ 上非负可测函数 $\rho$ 使得{4.5.1} 成立”是关键的，然而在实际应用中该条件不容易验证。因此，需要寻找形式上更简单的充分条件。我们有如下的结果。
 
+\begin{theorem}\label{thm:4.5.2}
+设 $T: A \to B$ 是一个可测映射，$B$ 是 $\mathbb{R}^n$ 中一开集。若存在 $A$ 上非负可测函数 $\rho$，使得对任意左闭右开的矩体 $I$，有
+\[
+mI = \int_{T^{-1}(I)} \rho\, dx,
+\tag{4.5.3}
+\]
+那么，式{4.5.1} 成立。
+\end{theorem}
+我们想把
+\[
+\int_B f(y)\,dy
+\]
+转化为在 $A$ 上的积分
+\[
+\int_A f\bigl(T(x)\bigr)\,\rho(x)\,dx ,
+\]
+其中 $T: A \to B$ 是一个映射，$\rho$ 是“修正因子”（通常就是雅可比行列式的绝对值）。
 
+为了做到这一点，必须保证“通过 $T$ 把 $A$ 的测度转移到 $B$”这个过程是良好的。
+换句话说，对 $B$ 的集合的测度，必须能通过 $A$ 上的积分来计算。
 
+举一个简单的例子：
+\[
+\int (1 - x^2)\, dx
+\]
 
+要把 $x$ 换成 $\sin\theta$，除了积分区间要变，
+$dx$ 变成 $d\theta$ 的时候也要乘一个函数，
+就像这里面的 $\rho$。
 
+以 $x$ 为定义域 $B$ 的 $I$ 的测度，
+都能以 $\theta$ 为变量的定义域 $A$ 内
+对 $\rho$ 积分得到。
+$dx$ 和 $d\theta$ 都显示的是坐标系独有的性质，
+就像线积分一样，如果只对线段积分，
+积分出来就是长度，
+但是加入了 $\rho$，
+长度增加了一个性质，
+就可以理解为算质量。
 
+这里也可以理解为权重。
+\begin{corollary}\label{cor:4.5.1}
+对 $\mathbb{R}^n$ 中的平移和伸缩变换：
+\[
+T_{x_0}: x \mapsto x + x_0, 
+\qquad
+S_{\lambda}: x \mapsto \lambda x,
+\]
+其中 $x_0 \in \mathbb{R}^n$，$\lambda$ 为一非零实数。设 $f$ 是 $\mathbb{R}^n$ 上的可测函数，$E \in \mathcal{M}$，则有
+\[
+\int_E f(x+x_0)\,dx \;=\; \int_{E+x_0} f(x)\,dx,
+\]
+\[
+\int_E f(\lambda x)\,dx \;=\; \frac{1}{|\lambda|^n} \int_{\lambda E} f(x)\,dx.
+\]
+\end{corollary}
+第一个等式其实就把x+x0替换成t最后把t又换回了x，dt=dx所以ρ就是1。
+Lebesgue 积分对平移群作用是不变的。
+设在 $\mathbb{R}^2$ 中有一个长方形，其长和宽分别为 $a$ 和 $b$，面积为
+\[
+S = ab.
+\]
+若将长和宽同时放大 $\lambda$ 倍，则新长宽为 $\lambda a, \lambda b$，面积变为
+\[
+S' = (\lambda a)(\lambda b) = \lambda^2 ab.
+\]
+因此，在二维中伸缩变换 $S_\lambda: x \mapsto \lambda x$ 会使面积放大 $\lambda^2$ 倍。
+\section{重积分与累次积分}
+重积分与累次积分的关系是重要的，在 Riemann 积分里，重积分的计算通常是通过累次积分分逐一计算一元函数的积分而实现的。而且，累次积分的积分顺序的交换在积分性质的研究中有着不可缺少的作用。本节我们考虑 Lebesgue 积分的重积分与累次积分的关系，即考虑在什么条件下， 如下等式成立：
+\[
+\int_B dy \int_A f(x,y)\,dx 
+= \int_{A \times B} f(x,y)\,d(x,y),
+\tag{4.6.1}
+\]
+其中 $A,B$ 分别为 $\mathbb{R}^n$ 和 $\mathbb{R}^m$ 中的可测子集。由于可测集 $A \times B$ 上的可测函数可以通过零扩充化为全空间 $\mathbb{R}^{n+m}$ 上的积分而不影响其积分值，为简计，我们仅考虑 $A = \mathbb{R}^n, B = \mathbb{R}^m$ 的情形。
+f(x,y)dx 对x积分以后x消失积分出来的是一个关于y的函数
+我们将循如下步骤证明 (4.6.1)。先证明结论对特征函数 
+$f = \chi_E$ 成立，其中 $E$ 是 $\mathbb{R}^{n+m}$ 中可测集。然后证明其对非负简单函数成立。再利用 Levi 定理证明其对 $\mathbb{R}^{n+m}$ 上非负可测函数 $f$ 成立。最后，利用 $f = f^+ - f^-$ 将结论拓展到一般可测函数。
+
+当 $f$ 为特征函数 $f = \chi_E$ 时，(4.6.1) 可写成
+\[
+\int_{\mathbb{R}^m} dy \int_{\mathbb{R}^n} \chi_E(x,y) \, dx = mE.
+\]
+
+由于 $\chi_E(x,y) = 1 \iff (x,y) \in E$，即 $x \in E^y := \{x \in \mathbb{R}^n \mid (x,y)\in E\}$，所以
+\[
+\chi_E(x,y) = \chi_{E^y}(x).
+\]
+因此 (4.6.1) 可进一步化为
+\[
+\int_{\mathbb{R}^m} mE^y \, dy = mE. \tag{4.6.2}
+\]
+
+这个等式包含如下内容：  
+(1) 对几乎所有的 $y \in \mathbb{R}^m$，$\mathbb{R}^n$ 中集合 $E^y$ 是可测的；  
+(2) $mE^y$ 作为 $y$ 的函数在 $\mathbb{R}^m$ 上是可测的；  
+(3) 等式 (4.6.2) 成立。  
+
+我们将在引理 4.6.1 中给出该结果的证明。先引入如下记号。设 $E$ 是 $\mathbb{R}^{n+m}$ 中可测集，$\forall y \in \mathbb{R}^m$，称
+\[
+E^y := \{ x \in \mathbb{R}^n \mid (x,y) \in E\}.
+\]
+\begin{lemma}[4.6.1]
+设 $E \subset \mathbb{R}^{n+m}$ 为可测集，则
+\begin{enumerate}[(i)]
+  \item $E^y$ 是 $\mathbb{R}^n$ 中的可测集，对几乎处处的 $y \in \mathbb{R}^m$ 都成立；
+  \item $m(E^y)$ 是 $\mathbb{R}^m$ 上的非负可测函数，且满足
+  \[
+  \int_{\mathbb{R}^m} m(E^y)\, dy = m(E).
+  \]
+\end{enumerate}
+\end{lemma}
+\begin{theorem}[4.6.1 Tonelli]
+设 $f(x,y)$ 是 $A \times B$ 上的非负可测函数，其中 $A, B$ 分别为 $\mathbb{R}^n$ 和 $\mathbb{R}^m$ 中可测集，则
+
+\begin{enumerate}[(i)]
+\item 对几乎所有的 $y \in B$，$f(x,y)$ 作为 $x$ 的函数是 $A$ 上的非负可测函数；
+\item $G(y) := \int_A f(x,y)\,dx$ 是 $B$ 上的非负可测函数，且公式 (4.6.1) 成立。
+\end{enumerate}
+\end{theorem}
+\begin{theorem}[4.6.2 Fubini]
+设 $f(x,y) \in L(A \times B)$，其中 $A,B$ 分别为 $\mathbb{R}^n$ 和 $\mathbb{R}^m$ 中可测集，则
+
+\begin{itemize}
+  \item[(i)] 对几乎所有的 $y \in B$，$f(x,y)$ 作为 $x$ 的函数是 $A$ 上的可积函数；
+  \item[(ii)] $G(y) := \int_A f(x,y)\,dx \in L(B)$，且式 (4.6.1) 成立。
+\end{itemize}
+\end{theorem}
+Tonelli和Fubini都是为了让累次积分=二重积分。\\
+今天初稿完成了4.6以后用到会补充内容今天是2025年8月16号。
 
 \end{document}
 
