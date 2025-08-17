@@ -1,4 +1,4 @@
-name: Build LaTeX PDF
+name: Build PDF (xu-cheng)
 
 on:
   push:
@@ -7,55 +7,31 @@ on:
     branches: [ main ]
 
 jobs:
-  build-pdf:
-    name: Compile LaTeX to PDF
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      # 1. 拉取仓库
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      # 2. 安装 TeX Live & Biber（含中日韩字体）
-      - name: Install TeX Live and Biber
+      # 如果有额外系统依赖/字体，在这里装（可删掉）
+      - name: Install extra packages (optional)
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            texlive-xetex \
-            texlive-fonts-recommended \
-            texlive-latex-recommended \
-            texlive-latex-extra \
-            texlive-bibtex-extra \
-            biber \
-            fonts-noto-cjk
+          sudo apt-get install -y fonts-noto-cjk
 
-      # 3. 第一次编译
-      - name: First XeLaTeX compilation
-        run: xelatex -interaction=nonstopmode dx-real-analysis.tex || true
+      # 用 xu-cheng/latex-action 编译
+      - name: LaTeX build (XeLaTeX + latexmk)
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: dx-real-analysis.tex      # ← 主文件名（改成你的）
+          latexmk_use_xelatex: true            # 使用 xelatex
+          # 如果用 biber（参考文献），开启下一行
+          # extra_system_packages: "biber"
+          # latexmk_shell_escape: true         # 若需要 -shell-escape
 
-      # 4. 参考文献
-      - name: Run Biber
-        run: biber dx-real-analysis || true
-
-      # 5. 第二次编译
-      - name: Second XeLaTeX compilation
-        run: xelatex -interaction=nonstopmode dx-real-analysis.tex || true
-
-      # 6. 第三次编译
-      - name: Final XeLaTeX compilation
-        run: xelatex -interaction=nonstopmode dx-real-analysis.tex || true
-
-      # 6.5 构建后列出文件（仅命令，无中文）
-      - name: List files after build
-        run: |
-          pwd
-          ls -lah
-          ls -lah *.pdf || true
-          ls -lah **/*.pdf || true
-
-      # 7. 上传 PDF
-      - name: Upload PDF artifact
+      # 上传 PDF（和 root_file 同名）
+      - name: Upload PDF
         uses: actions/upload-artifact@v4
         with:
-          name: dx-real-analysis-pdf
-          path: "*.pdf"
+          name: pdf-xu-cheng
+          path: dx-real-analysis.pdf          # ← 与 root_file 同名的 .pdf这个复制进workflow里面以后生成的pdf叫什么啊
